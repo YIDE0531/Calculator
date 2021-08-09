@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 import com.nuu.calculator.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private Context context;
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = binding.edtName.getText().toString();
                 if(checkName(name)){
-                    Intent intent  = new Intent();
+                    Intent intent  = new Intent(context, CalculatorActivity.class);
                     intent.putExtra("name", name);
                     startActivity(intent);
                 }else{
