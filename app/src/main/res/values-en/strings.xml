@@ -2,4 +2,15 @@
 <resources>
     <string name="app_name">Calculator</string>
     <string name="name_hint">please enter your name</string>
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>
+    <string name="logout_msg">Are you sure to logout</string>
+    <string name="logout">Logout</string>
+    <string name="confirm">confirm</string>
+    <string name="cancel">cancel</string>
+
 </resources>

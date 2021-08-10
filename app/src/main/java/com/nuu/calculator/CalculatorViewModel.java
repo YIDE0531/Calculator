@@ -1,5 +1,6 @@
 package com.nuu.calculator;
 
+import android.content.Context;
 import android.util.Log;
 import androidx.databinding.ObservableField;
 
@@ -10,8 +11,10 @@ import static com.nuu.calculator.util.InfixToPostFix.infixToPostFix;
 
 public class CalculatorViewModel{
     public final ObservableField<String> resultText = new ObservableField<>();   //textView畫面顯示
+    public final ObservableField<String> nameText = new ObservableField<>();   //textView畫面顯示
     private String nowNumber;  //要進行運算的整數
     private String nowText;
+    private boolean isDeleteChar = false;
 
     CalculatorViewModel(){
         clearData();
@@ -20,6 +23,10 @@ public class CalculatorViewModel{
     //刪除前一個字元
     public void backspace() {
         if (!nowText.isEmpty()) {
+            if (nowText.length() > 1) {
+                char nowDeleteChar = nowText.charAt(nowText.length() - 2);
+                isDeleteChar = !findOperator(nowDeleteChar); //判斷刪除的前一字如果不是運算子，讓他下次可直接輸入運算子
+            }
             nowText = nowText.substring(0, nowText.length() - 1);
             resultText.set(nowText);
             if (!nowNumber.isEmpty()) {
@@ -99,33 +106,21 @@ public class CalculatorViewModel{
                                 result = String.valueOf(a + b);
                                 nowPosition -= 2;
                                 postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.add(nowPosition, result);
                                 break;
                             case "-":
                                 result = String.valueOf(a - b);
                                 nowPosition -= 2;
                                 postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.add(nowPosition, result);
                                 break;
                             case "x":
                                 result = String.valueOf(a * b);
                                 nowPosition -= 2;
                                 postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.add(nowPosition, result);
                                 break;
                             case "/":
                                 result = String.valueOf(a / b);
                                 nowPosition -= 2;
                                 postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.add(nowPosition, result);
                                 break;
                             case "!":
 //                                Long factorialNum = 1L;
@@ -136,11 +131,11 @@ public class CalculatorViewModel{
                                 }
                                 result = factorialNum.toString();
                                 nowPosition -= 1;
-                                postfixList.remove(nowPosition);
-                                postfixList.remove(nowPosition);
-                                postfixList.add(nowPosition, result);
                                 break;
                         }
+                        postfixList.remove(nowPosition);
+                        postfixList.remove(nowPosition);
+                        postfixList.add(nowPosition, result);
                     }
                     nowPosition++;
                 }
@@ -156,10 +151,11 @@ public class CalculatorViewModel{
     }
 
     private void operatorMethod(String operator){
-        if (!nowNumber.isEmpty() && !nowNumber.endsWith(".") || nowText.endsWith("!")) {
+        if (!nowNumber.isEmpty() && !nowNumber.endsWith(".") || nowText.endsWith("!") || isDeleteChar) {
             nowText += operator;
             resultText.set(nowText);
             nowNumber = "";
+            isDeleteChar = false;
         }
     }
 
@@ -174,7 +170,7 @@ public class CalculatorViewModel{
 
     // 小數點
     public void decimalPoint(){
-        if (!nowNumber.isEmpty() && !nowNumber.endsWith(".")) {
+        if (!nowNumber.isEmpty() && !nowNumber.contains(".")) {
             nowNumber += ".";
             nowText += ".";
             resultText.set(nowText);

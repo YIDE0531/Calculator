@@ -6,6 +6,10 @@ import java.util.Stack;
 
 public class InfixToPostFix {
 
+    public static boolean findOperator(char param){
+        return (param=='+' || param=='-' || param=='x' || param=='/' || param=='^' || param=='!');
+    }
+
     public static boolean findOperator(String param){
         return (param.contains("+") || param.contains("-") ||
                 param.contains("x") || param.contains("/") ||
@@ -55,7 +59,7 @@ public class InfixToPostFix {
                         postFixList.add(stack.pop()+"");
                     }
                 }
-            }else if(word=='+' || word=='-' || word=='x' || word=='/' || word=='^' || word=='!'){
+            }else if(findOperator(word)){
                 flag = false;
                 if (!stack.isEmpty()) {
                     while (!stack.isEmpty() && precedence(stack.peek()) >= precedence(word)) {
